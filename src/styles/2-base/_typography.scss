@@ -1,0 +1,17 @@
+body {
+  // font-family: $SanSerif, $serif;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+}
+
+a {
+  @include transition;
+  text-decoration: none;
+  color: inherit;
+}
+
+@media (max-width: $desktop) {
+  body {
+    font-size: 14px;
+  }
+}

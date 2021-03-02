@@ -1,0 +1,33 @@
+@mixin transition {
+  transition: all 0.2s ease-in-out;
+}
+
+@mixin section-title {
+  h2 {
+    color: $yellow;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  hr {
+    border-color: $yellow;
+    opacity: 0.3;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+
+@mixin sides-margin {
+  // margin-left: 10%;
+  // margin-right: 10%;
+  width: 1140px;
+  max-width: 90%;
+  margin: auto;
+}
+
+@mixin fixed-footer {
+  background-color: $white;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 250px;
+}

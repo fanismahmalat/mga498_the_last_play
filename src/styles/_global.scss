@@ -1,0 +1,46 @@
+* {
+  outline: none;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+.app {
+  height: 100%;
+  cursor: grab;
+}
+
+.element {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+
+  p {
+    margin-top: 10px;
+    font-size: 20px;
+  }
+}
+
+section {
+  @include sides-margin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(186, 186, 186);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $gray_3;
+}
