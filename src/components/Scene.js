@@ -21,7 +21,7 @@ const Scene = () => {
 
     // Instantiate the renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    var manager = new THREE.LoadingManager();
+    const manager = new THREE.LoadingManager();
 
     // Set the size of the renderer
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -67,24 +67,22 @@ const Scene = () => {
 
     // GLTF Loader
     const loader = new GLTFLoader(manager);
-    // const loader = new DRACOLoader();
-    // loader.setDecoderConfig({ type: 'js' });
-    // loader.setDecoderPath('../node_modules/three/examples/js/libs/draco/');
-    // loader.preload();
+
     loader.load(
-      '/office/office.glb',
+      '/scene/office.glb',
       function (gltf) {
         // Set model coordinates
         gltf.scene.position.set(40, -50, -50);
+        gltf.scene.scale.set(40, 40, 40);
         // Add model to scene
         scene.add(gltf.scene);
 
         console.log(gltf.scene);
 
         // Add click listener
-        gltf.scene.children[0].children[0].on('click', () => {
-          console.log('desk clicked');
-        });
+        // gltf.scene.children[0].children[0].on('click', () => {
+        //   console.log('desk clicked');
+        // });
 
         // Set loading to false
         setLoading(false);
@@ -104,21 +102,44 @@ const Scene = () => {
     };
 
     // const raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1, 0), 0, 10);
+
     // Controls
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enabled = false; // disable cursor orbit
+    // controls.enabled = false; // disable cursor orbit
 
     // Camera move based on mouse interaction
     var mouse = { x: 0, y: 0 };
     function mouseMove(e) {
       camera.position.x += Math.max(Math.min((mouse.x - e.clientX) * 0.01, 0.2), -0.2);
       camera.position.y += Math.max(Math.min((mouse.y - e.clientY) * 0.01, 0.2), -0.2);
+      // camera.position.x += (mouse.x - lookPosition.x) / easeAmount;
+      // camera.position.y += (mouse.y - lookPosition.y) / easeAmount;
 
       mouse.x = e.clientX;
       mouse.y = e.clientY;
     }
 
     window.addEventListener('mousemove', mouseMove);
+
+    const handleWindowResize = () => {
+      const width = sceneRef.current.clientWidth;
+      const height = sceneRef.current.clientHeight;
+
+      if (sceneRef.current.clientWidth < 600) {
+        console.log('small');
+        camera.fov = 100;
+      } else {
+        camera.fov = 55;
+      }
+
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+
+      renderer.setSize(width, height);
+    };
+
+    // Responsive
+    window.addEventListener('resize', handleWindowResize);
 
     // Animate canvas
     const animate = function () {
@@ -130,6 +151,11 @@ const Scene = () => {
     };
 
     animate();
+
+    return () => {
+      window.removeEventListener('mousemove', mouseMove);
+      window.removeEventListener('resize', handleWindowResize);
+    };
   }, []);
 
   return (
