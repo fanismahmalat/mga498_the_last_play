@@ -72,7 +72,8 @@ const Scene = () => {
     const loader = new GLTFLoader(manager);
 
     loader.load(
-      'https://cdn.statically.io/gh/fanismahmalat/mga498_the_last_play/master/public/scene/export.glb',
+      // 'https://cdn.statically.io/gh/fanismahmalat/mga498_the_last_play/master/public/scene/export.glb',
+      'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/export.glb',
       // '/scene/export.glb',
       function (gltf) {
         // Set model coordinates
