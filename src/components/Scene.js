@@ -65,15 +65,23 @@ const Scene = () => {
     dLight2.position.set(new THREE.Vector3(-10, -40, -5));
     scene.add(dLight2);
 
+    const pLight = new THREE.PointLight('white', 1, 500);
+    light.position.set(-150, -150, 250);
+    scene.add(pLight);
+
     // GLTF Loader
     const loader = new GLTFLoader(manager);
+    const draco = new DRACOLoader();
+    draco.setDecoderPath('three/examples/js/libs/draco/draco_decoder.js');
+    loader.setDRACOLoader(draco);
 
     loader.load(
-      '/scene/office.glb',
+      '/scene/office_2.glb',
       function (gltf) {
         // Set model coordinates
         gltf.scene.position.set(40, -50, -50);
         gltf.scene.scale.set(40, 40, 40);
+
         // Add model to scene
         scene.add(gltf.scene);
 
