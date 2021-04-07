@@ -5,7 +5,6 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 import Loading from './Loading';
 import { Interaction } from 'three.interaction';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 const Scene = () => {
   const [loading, setLoading] = React.useState(true);
@@ -73,7 +72,8 @@ const Scene = () => {
     const loader = new GLTFLoader(manager);
 
     loader.load(
-      '/scene/export.glb',
+      'https://cdn.statically.io/gh/fanismahmalat/mga498_the_last_play/master/public/scene/export.glb',
+      // '/scene/export.glb',
       function (gltf) {
         // Set model coordinates
         gltf.scene.position.set(40, -50, -50);
