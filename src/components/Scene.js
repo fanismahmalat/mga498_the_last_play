@@ -71,16 +71,21 @@ const Scene = () => {
 
     // GLTF Loader
     const loader = new GLTFLoader(manager);
-    const draco = new DRACOLoader();
-    draco.setDecoderPath('three/examples/js/libs/draco/draco_decoder.js');
-    loader.setDRACOLoader(draco);
 
     loader.load(
-      '/scene/office_2.glb',
+      '/scene/export.glb',
       function (gltf) {
         // Set model coordinates
         gltf.scene.position.set(40, -50, -50);
         gltf.scene.scale.set(40, 40, 40);
+
+        gltf.scene.traverse(function (child) {
+          if (child.isMesh) {
+            let m = child;
+            m.receiveShadow = true;
+            m.castShadow = true;
+          }
+        });
 
         // Add model to scene
         scene.add(gltf.scene);
