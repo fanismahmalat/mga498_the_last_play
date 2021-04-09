@@ -1,15 +1,28 @@
 import React, { Suspense } from 'react';
+
+// Components
+import Loading from './Loading';
+import ItemInspector from './ItemInspector';
+
+// Three
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
-import Loading from './Loading';
 import { Interaction } from 'three.interaction';
 
+// Context
+import { Context } from './Context';
+
 const Scene = () => {
-  const [loading, setLoading] = React.useState(true);
-  const [progress, setProgress] = React.useState(0);
-  const elemRef = React.useRef(null);
+  /**
+   * Context
+   */
+  const { state, dispatch } = React.useContext(Context);
+
+  /**
+   * Refs
+   */
   const sceneRef = React.useRef(null);
   const fpsRef = React.useRef(null);
 
@@ -72,7 +85,6 @@ const Scene = () => {
     const loader = new GLTFLoader(manager);
 
     loader.load(
-      // 'https://cdn.statically.io/gh/fanismahmalat/mga498_the_last_play/master/public/scene/export.glb',
       'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/export.glb',
       // '/scene/export.glb',
       function (gltf) {
@@ -94,12 +106,31 @@ const Scene = () => {
         console.log(gltf.scene);
 
         // Add click listener
-        // gltf.scene.children[0].children[0].on('click', () => {
-        //   console.log('desk clicked');
-        // });
+        gltf.scene.children.forEach((el) => {
+          if (el.name !== 'office') {
+            el.on('mouseover', () => {
+              document.body.style.cursor = 'pointer';
+            });
 
-        // Set loading to false
-        setLoading(false);
+            el.on('mouseout', () => {
+              document.body.style.cursor = 'default';
+            });
+
+            el.on('click', () => {
+              console.log(`clicked: ${el.name}`);
+              dispatch({
+                type: 'field',
+                field: 'selectedItem',
+                payload: el.name,
+              });
+              dispatch({
+                type: 'field',
+                field: 'itemInspectorOpen',
+                payload: true,
+              });
+            });
+          }
+        });
       },
       undefined,
       function (error) {
@@ -108,39 +139,39 @@ const Scene = () => {
     );
 
     manager.onProgress = function (item, loaded, total) {
-      console.log('Loaded:', (loaded / total) * 100 + '%');
-
       if ((loaded / total) * 100 !== 50) {
-        setProgress((loaded / total) * 100);
+        dispatch({
+          type: 'field',
+          field: 'sceneProgress',
+          payload: (loaded / total) * 100,
+        });
       }
     };
-
-    // const raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1, 0), 0, 10);
 
     // Controls
     const controls = new OrbitControls(camera, renderer.domElement);
     // controls.enabled = false; // disable cursor orbit
+    // controls.enableDamping = true;
+    // controls.dampingFactor = 0.05;
 
     // Camera move based on mouse interaction
     var mouse = { x: 0, y: 0 };
+
     function mouseMove(e) {
       camera.position.x += Math.max(Math.min((mouse.x - e.clientX) * 0.01, 0.2), -0.2);
       camera.position.y += Math.max(Math.min((mouse.y - e.clientY) * 0.01, 0.2), -0.2);
-      // camera.position.x += (mouse.x - lookPosition.x) / easeAmount;
-      // camera.position.y += (mouse.y - lookPosition.y) / easeAmount;
 
       mouse.x = e.clientX;
       mouse.y = e.clientY;
     }
 
-    window.addEventListener('mousemove', mouseMove);
+    // window.addEventListener('mousemove', mouseMove);
 
     const handleWindowResize = () => {
       const width = sceneRef.current.clientWidth;
       const height = sceneRef.current.clientHeight;
 
       if (sceneRef.current.clientWidth < 600) {
-        console.log('small');
         camera.fov = 100;
       } else {
         camera.fov = 55;
@@ -161,24 +192,22 @@ const Scene = () => {
       requestAnimationFrame(animate);
 
       renderer.render(scene, camera);
+      controls.update();
       stats.update();
     };
 
     animate();
 
     return () => {
-      window.removeEventListener('mousemove', mouseMove);
+      // window.removeEventListener('mousemove', mouseMove);
       window.removeEventListener('resize', handleWindowResize);
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <Suspense fallback={<Loading />}>
-      <div ref={elemRef} className="element">
-        <p>Selected element: </p>
-      </div>
-
-      <Loading progress={progress} />
+      <Loading />
+      <ItemInspector />
       <div ref={sceneRef} className="scene" />
       <div ref={fpsRef} className="fps" />
     </Suspense>

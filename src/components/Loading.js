@@ -1,18 +1,30 @@
 import React from 'react';
+
+// Material UI
 import { LinearProgress } from '@material-ui/core';
 
-const Loading = ({ progress }) => {
+// Context
+import { Context } from './Context';
+
+const Loading = () => {
+  /**
+   * Context
+   */
+  const {
+    state: { sceneProgress },
+  } = React.useContext(Context);
+
   return (
     <div
       className="loading"
       style={{
-        opacity: progress !== 100 ? '1' : '0',
-        pointerEvents: progress !== 100 ? 'all' : 'none',
+        opacity: sceneProgress !== 100 ? '1' : '0',
+        pointerEvents: sceneProgress !== 100 ? 'all' : 'none',
       }}
     >
       <div className="loading-inner">
         <span>Loading...</span>
-        <LinearProgress variant="buffer" valueBuffer={progress} value={progress} />
+        <LinearProgress variant="buffer" valueBuffer={sceneProgress} value={sceneProgress} />
       </div>
     </div>
   );
