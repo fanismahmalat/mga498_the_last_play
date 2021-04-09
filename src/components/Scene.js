@@ -86,7 +86,6 @@ const Scene = () => {
 
     loader.load(
       'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/export.glb',
-      // '/scene/export.glb',
       function (gltf) {
         // Set model coordinates
         gltf.scene.position.set(40, -50, -50);

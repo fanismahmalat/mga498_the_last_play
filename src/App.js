@@ -6,6 +6,8 @@ import Scene from './components/Scene';
 // Context
 import { Context, SettingsReducer, initialState } from './components/Context';
 
+import '../public/items/closure_paper.glb';
+
 const App = () => {
   /**
    * Context
