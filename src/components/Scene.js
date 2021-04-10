@@ -10,6 +10,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { Interaction } from 'three.interaction';
+import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
 
 // Context
 import { Context } from './Context';
@@ -25,6 +26,7 @@ const Scene = () => {
    */
   const sceneRef = React.useRef(null);
   const fpsRef = React.useRef(null);
+  const backToSeatRef = React.useRef(null);
 
   React.useEffect(() => {
     // Create a scene
@@ -51,7 +53,7 @@ const Scene = () => {
     );
 
     // Set camera position
-    camera.position.set(200, 20, -280);
+    camera.position.set(115, -10, -110);
 
     // FPS counter
     const stats = new Stats();
@@ -65,30 +67,36 @@ const Scene = () => {
     scene.add(axesHelper);
 
     // Lights
-    const light = new THREE.AmbientLight('#ffffff', 0.5);
-    light.position.set(new THREE.Vector3(0, 0, 0));
+    const light = new THREE.AmbientLight('#ffffff', 0.6);
+    light.position.set(new THREE.Vector3(0, 50, 0));
     scene.add(light);
 
-    const dLight1 = new THREE.DirectionalLight(0xffffff, 1);
-    dLight1.position.set(new THREE.Vector3(10, 10, 5));
-    scene.add(dLight1);
+    const pLight1 = new THREE.PointLight('white', 0.8, 0);
+    pLight1.position.set(150, 0, -50);
+    scene.add(pLight1);
 
-    const dLight2 = new THREE.DirectionalLight(0xffffff, 0.7);
-    dLight2.position.set(new THREE.Vector3(-10, -40, -5));
-    scene.add(dLight2);
+    const pLight2 = new THREE.PointLight('white', 0.6, 0);
+    pLight2.position.set(-50, 0, -50);
+    scene.add(pLight2);
 
-    const pLight = new THREE.PointLight('white', 1, 500);
-    light.position.set(-150, -150, 250);
-    scene.add(pLight);
+    const sphereSize = 20;
+    const pointLightHelper1 = new THREE.PointLightHelper(pLight1, sphereSize);
+    scene.add(pointLightHelper1);
+    const pointLightHelper2 = new THREE.PointLightHelper(pLight2, sphereSize);
+    scene.add(pointLightHelper2);
+
+    // const gridHelper = new THREE.GridHelper(500, 20);
+    // scene.add(gridHelper);
 
     // GLTF Loader
     const loader = new GLTFLoader(manager);
 
     loader.load(
       'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/export.glb',
+      // '/scene/export2.glb',
       function (gltf) {
         // Set model coordinates
-        gltf.scene.position.set(40, -50, -50);
+        gltf.scene.position.set(40, -40, -50);
         gltf.scene.scale.set(40, 40, 40);
 
         gltf.scene.traverse(function (child) {
@@ -106,29 +114,58 @@ const Scene = () => {
 
         // Add click listener
         gltf.scene.children.forEach((el) => {
-          if (el.name !== 'office') {
-            el.on('mouseover', () => {
-              document.body.style.cursor = 'pointer';
-            });
+          if (
+            el.name === 'Light' ||
+            el.name === 'Camera' ||
+            el.name === 'glass_2' ||
+            el.name === 'cigar' ||
+            el.name === 'Ashtray' ||
+            el.name === 'bottle' ||
+            el.name === 'office' ||
+            el.name === 'king'
+          )
+            return;
 
-            el.on('mouseout', () => {
-              document.body.style.cursor = 'default';
-            });
+          console.log(el.name);
 
-            el.on('click', () => {
+          el.on('mouseover', () => {
+            document.body.style.cursor = 'pointer';
+          });
+
+          el.on('mouseout', () => {
+            document.body.style.cursor = 'default';
+          });
+
+          if (el.name === 'office_furniture') {
+            return el.on('click', () => {
               console.log(`clicked: ${el.name}`);
-              dispatch({
-                type: 'field',
-                field: 'selectedItem',
-                payload: el.name,
-              });
-              dispatch({
-                type: 'field',
-                field: 'itemInspectorOpen',
-                payload: true,
-              });
+
+              new TWEEN.Tween(camera.position)
+                .to({ x: 62, y: 10, z: -20 }, 2000)
+                .easing(TWEEN.Easing.Quadratic.InOut)
+                .start();
+
+              new TWEEN.Tween(controls.target)
+                .to({ x: 62, y: -20, z: -40 }, 2000)
+                .easing(TWEEN.Easing.Quadratic.InOut)
+                .start();
             });
           }
+
+          el.on('click', () => {
+            console.log(`clicked: ${el.name}`);
+            dispatch({
+              type: 'field',
+              field: 'selectedItem',
+              payload: el.name,
+            });
+
+            dispatch({
+              type: 'field',
+              field: 'itemInspectorOpen',
+              payload: true,
+            });
+          });
         });
       },
       undefined,
@@ -149,9 +186,23 @@ const Scene = () => {
 
     // Controls
     const controls = new OrbitControls(camera, renderer.domElement);
+    controls.target = new THREE.Vector3(0, -20, 0);
     // controls.enabled = false; // disable cursor orbit
-    // controls.enableDamping = true;
-    // controls.dampingFactor = 0.05;
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.02;
+
+    // Back button
+    backToSeatRef.current.addEventListener('click', () => {
+      new TWEEN.Tween(camera.position)
+        .to({ x: 115, y: -10, z: -110 }, 2000)
+        .easing(TWEEN.Easing.Quadratic.InOut)
+        .start();
+
+      new TWEEN.Tween(controls.target)
+        .to({ x: 0, y: -20, z: 0 }, 2000)
+        .easing(TWEEN.Easing.Quadratic.InOut)
+        .start();
+    });
 
     // Camera move based on mouse interaction
     var mouse = { x: 0, y: 0 };
@@ -193,6 +244,7 @@ const Scene = () => {
       renderer.render(scene, camera);
       controls.update();
       stats.update();
+      TWEEN.update();
     };
 
     animate();
@@ -207,6 +259,10 @@ const Scene = () => {
     <Suspense fallback={<Loading />}>
       <Loading />
       <ItemInspector />
+      <button ref={backToSeatRef} style={{ position: 'absolute', top: '0', left: '0', zIndex: 2 }}>
+        Back to the seat
+      </button>
+
       <div ref={sceneRef} className="scene" />
       <div ref={fpsRef} className="fps" />
     </Suspense>
