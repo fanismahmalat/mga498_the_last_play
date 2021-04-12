@@ -18,7 +18,7 @@ const ItemInspector = () => {
    * Context
    */
   const {
-    state: { selectedItem, itemInspectorOpen, itemAnimationEnabled },
+    state: { selectedItem, itemInspectorOpen, itemAnimationEnabled, models },
     dispatch,
   } = React.useContext(Context);
 
@@ -40,7 +40,6 @@ const ItemInspector = () => {
 
       // Instantiate the renderer
       const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      const manager = new THREE.LoadingManager();
 
       // Set the size of the renderer
       renderer.setSize(
@@ -73,38 +72,23 @@ const ItemInspector = () => {
       light.position.set(new THREE.Vector3(10, 0, 0));
       scene.add(light);
 
-      // GLTF Loader
-      const loader = new GLTFLoader(manager);
+      // Add model to scene
+      const model = models[selectedItem];
 
-      loader.load(
-        `/items/${selectedItem}.glb`,
-        function (gltf) {
-          // Set model coordinates
-          gltf.scene.position.set(0, 0, 0);
-          gltf.scene.scale.set(100, 100, 100);
+      model.scene.position.set(0, 0, 0);
+      model.scene.scale.set(100, 100, 100);
 
-          gltf.scene.traverse(function (child) {
-            if (child.isMesh) {
-              let m = child;
-              m.receiveShadow = true;
-              m.castShadow = true;
-            }
-          });
+      console.log(model.scene);
 
-          // Add model to scene
-          scene.add(gltf.scene);
-
-          console.log(gltf.scene);
-        },
-        undefined,
-        function (error) {
-          console.error(error);
+      model.scene.traverse(function (child) {
+        if (child.isMesh) {
+          let m = child;
+          m.receiveShadow = true;
+          m.castShadow = true;
         }
-      );
+      });
 
-      manager.onProgress = function (item, loaded, total) {
-        console.log('Loaded:', (loaded / total) * 100 + '%');
-      };
+      scene.add(model.scene);
 
       // Controls
       const controls = new OrbitControls(camera, renderer.domElement);
@@ -164,14 +148,17 @@ const ItemInspector = () => {
   const handleCloseInspector = () => {
     dispatch({
       type: 'field',
-      field: 'selectedItem',
-      payload: '',
-    });
-    dispatch({
-      type: 'field',
       field: 'itemInspectorOpen',
       payload: false,
     });
+
+    setTimeout(() => {
+      dispatch({
+        type: 'field',
+        field: 'selectedItem',
+        payload: '',
+      });
+    }, 800);
   };
 
   const handleToggleAnimation = () => {

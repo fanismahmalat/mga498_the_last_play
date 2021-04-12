@@ -91,88 +91,118 @@ const Scene = () => {
     // GLTF Loader
     const loader = new GLTFLoader(manager);
 
-    loader.load(
-      'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/export.glb',
-      // '/scene/export2.glb',
-      function (gltf) {
-        // Set model coordinates
-        gltf.scene.position.set(40, -40, -50);
-        gltf.scene.scale.set(40, 40, 40);
+    const loadAsync = (url) => {
+      return new Promise((resolve) => {
+        loader.load(url, (gltf) => {
+          resolve(gltf);
+        });
+      });
+    };
 
-        gltf.scene.traverse(function (child) {
-          if (child.isMesh) {
-            let m = child;
-            m.receiveShadow = true;
-            m.castShadow = true;
-          }
+    Promise.all([
+      loadAsync(
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/office.glb'
+      ),
+      loadAsync(
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/typewriter.glb'
+      ),
+      loadAsync(
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/closure_paper3.glb'
+      ),
+      loadAsync(
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/script.glb'
+      ),
+      // loadAsync('/scene/office.glb'),
+      // loadAsync('/scene/items/typewriter.glb'),
+      // loadAsync('/scene/items/closure_paper3.glb'),
+      // loadAsync('/scene/items/script.glb'),
+    ]).then((models) => {
+      // Set context for individual items
+      const individuals = models.filter((model, i) => i !== 0);
+
+      console.log(models);
+      dispatch({
+        type: 'field',
+        field: 'models',
+        payload: {
+          typewriter: individuals[0],
+          closure_paper3: individuals[1],
+          script: individuals[2],
+        },
+      });
+      // Get office model
+      const office = models[0];
+
+      // Set model coordinates
+      office.scene.position.set(40, -40, -50);
+      office.scene.scale.set(40, 40, 40);
+
+      office.scene.traverse(function (child) {
+        if (child.isMesh) {
+          let m = child;
+          m.receiveShadow = true;
+          m.castShadow = true;
+        }
+      });
+
+      // Add model to scene
+      scene.add(office.scene);
+
+      const interactiveObjects = office.scene.children.filter(
+        (item) =>
+          // item.name === 'folder' ||
+          item.name === 'typewriter' ||
+          item.name === 'closure_paper3' ||
+          item.name === 'script_1' ||
+          item.name === 'script_2' ||
+          item.name === 'script_3' ||
+          // item.name === 'death_cert_2' ||
+          // item.name === 'portraid' ||
+          item.name === 'office_furniture'
+      );
+
+      // Add click listener
+      interactiveObjects.forEach((el) => {
+        el.on('mouseover', () => {
+          document.body.style.cursor = 'pointer';
         });
 
-        // Add model to scene
-        scene.add(gltf.scene);
+        el.on('mouseout', () => {
+          document.body.style.cursor = 'default';
+        });
 
-        console.log(gltf.scene);
-
-        // Add click listener
-        gltf.scene.children.forEach((el) => {
-          if (
-            el.name === 'Light' ||
-            el.name === 'Camera' ||
-            el.name === 'glass_2' ||
-            el.name === 'cigar' ||
-            el.name === 'Ashtray' ||
-            el.name === 'bottle' ||
-            el.name === 'office' ||
-            el.name === 'king'
-          )
-            return;
-
-          console.log(el.name);
-
-          el.on('mouseover', () => {
-            document.body.style.cursor = 'pointer';
-          });
-
-          el.on('mouseout', () => {
-            document.body.style.cursor = 'default';
-          });
-
+        el.on('click', () => {
           if (el.name === 'office_furniture') {
-            return el.on('click', () => {
-              console.log(`clicked: ${el.name}`);
+            new TWEEN.Tween(camera.position)
+              .to({ x: 62, y: 10, z: -20 }, 2000)
+              .easing(TWEEN.Easing.Quadratic.InOut)
+              .start();
 
-              new TWEEN.Tween(camera.position)
-                .to({ x: 62, y: 10, z: -20 }, 2000)
-                .easing(TWEEN.Easing.Quadratic.InOut)
-                .start();
+            new TWEEN.Tween(controls.target)
+              .to({ x: 62, y: -20, z: -40 }, 2000)
+              .easing(TWEEN.Easing.Quadratic.InOut)
+              .start();
 
-              new TWEEN.Tween(controls.target)
-                .to({ x: 62, y: -20, z: -40 }, 2000)
-                .easing(TWEEN.Easing.Quadratic.InOut)
-                .start();
-            });
+            return;
           }
 
-          el.on('click', () => {
-            console.log(`clicked: ${el.name}`);
-            dispatch({
-              type: 'field',
-              field: 'selectedItem',
-              payload: el.name,
-            });
+          dispatch({
+            type: 'field',
+            field: 'selectedItem',
+            payload:
+              el.name === 'script_1' || el.name === 'script_2' || el.name === 'script_3'
+                ? 'script'
+                : el.name,
+          });
 
-            dispatch({
-              type: 'field',
-              field: 'itemInspectorOpen',
-              payload: true,
-            });
+          dispatch({
+            type: 'field',
+            field: 'itemInspectorOpen',
+            payload: true,
           });
         });
-      },
-      undefined,
-      function (error) {
-        console.error(error);
-      }
-    );
+      });
+    });
 
     manager.onProgress = function (item, loaded, total) {
       if ((loaded / total) * 100 !== 50) {
@@ -187,7 +217,7 @@ const Scene = () => {
     // Controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.target = new THREE.Vector3(0, -20, 0);
-    // controls.enabled = false; // disable cursor orbit
+    controls.enabled = false; // disable cursor orbit
     controls.enableDamping = true;
     controls.dampingFactor = 0.02;
 
@@ -250,7 +280,6 @@ const Scene = () => {
     animate();
 
     return () => {
-      // window.removeEventListener('mousemove', mouseMove);
       window.removeEventListener('resize', handleWindowResize);
     };
   }, [dispatch]);
@@ -258,7 +287,7 @@ const Scene = () => {
   return (
     <Suspense fallback={<Loading />}>
       <Loading />
-      <ItemInspector />
+      {state.selectedItem !== '' && <ItemInspector />}
       <button ref={backToSeatRef} style={{ position: 'absolute', top: '0', left: '0', zIndex: 2 }}>
         Back to the seat
       </button>

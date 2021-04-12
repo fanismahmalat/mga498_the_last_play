@@ -20,4 +20,5 @@ export const initialState = {
   itemInspectorOpen: false,
   itemAnimationEnabled: true,
   selectedItem: '',
+  models: [],
 };
