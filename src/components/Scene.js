@@ -95,26 +95,30 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
     };
 
     Promise.all([
-      // loadAsync(
-      //   'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/office.glb'
-      // ),
-      // loadAsync(
-      //   'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/typewriter.glb'
-      // ),
-      // loadAsync(
-      //   'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/closure_paper3.glb'
-      // ),
-      // loadAsync(
-      //   'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/script.glb'
-      // ),
-      loadAsync('/scene/office.glb'),
-      loadAsync('/scene/items/closure_paper.glb'),
-      loadAsync('/scene/items/glass.glb'),
-      loadAsync('/scene/items/king.glb'),
-      loadAsync('/scene/items/open_folder.glb'),
-      loadAsync('/scene/items/paper_left.glb'),
-      loadAsync('/scene/items/portrait.glb'),
-      loadAsync('/scene/items/typewritter.glb'),
+      loadAsync(
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/office.glb'
+      ),
+      loadAsync(
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/glass.glb'
+      ),
+      loadAsync(
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/closure_paper.glb'
+      ),
+      loadAsync(
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/king.glb'
+      ),
+      loadAsync(
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/open_folder.glb'
+      ),
+      loadAsync(
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/paper_left.glb'
+      ),
+      loadAsync(
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/portrait.glb'
+      ),
+      loadAsync(
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/typewritter.glb'
+      ),
     ]).then((models) => {
       // Set context for individual items
       const individuals = models.filter((model, i) => i !== 0);

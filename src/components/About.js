@@ -68,6 +68,7 @@ const About = () => {
           wherein every participant walks away having drawn their own conclusions about the
           characters and the space itself.
         </p>
+        <p>The project was led by Dr. Doros Polydorou.</p>
         <span className="sub-title">Credits</span>
         <div className="grid">
           <div className="role">

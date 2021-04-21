@@ -19,6 +19,7 @@
     "react-use-gesture": "^9.1.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
+    "swiper": "^6.5.7",
     "three": "^0.126.1",
     "three.interaction": "^0.2.3",
     "web-vitals": "^1.1.0"
