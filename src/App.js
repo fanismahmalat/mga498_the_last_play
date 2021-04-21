@@ -1,9 +1,8 @@
 import React from 'react';
-
-// Components
-import Scene from './components/Scene';
+import Sound from 'react-sound';
 
 // Context
+import Wrapper from './components/Wrapper';
 import { Context, SettingsReducer, initialState } from './components/Context';
 
 const App = () => {
@@ -15,7 +14,13 @@ const App = () => {
   return (
     <Context.Provider value={{ state, dispatch }}>
       <div className="app">
-        <Scene />
+        <Sound
+          url="/scene/sound/icanhearthebells.mp3"
+          playStatus={Sound.status.PLAYING}
+          loop={true}
+          volume={state.ambientSoundVolume}
+        />
+        <Wrapper />
       </div>
     </Context.Provider>
   );

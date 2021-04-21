@@ -1,9 +1,5 @@
 import React, { Suspense } from 'react';
 
-// Components
-import Loading from './Loading';
-import ItemInspector from './ItemInspector';
-
 // Three
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -15,7 +11,7 @@ import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
 // Context
 import { Context } from './Context';
 
-const Scene = () => {
+const Scene = ({ instructionRef, backtoseatRef }) => {
   /**
    * Context
    */
@@ -26,7 +22,6 @@ const Scene = () => {
    */
   const sceneRef = React.useRef(null);
   const fpsRef = React.useRef(null);
-  const backToSeatRef = React.useRef(null);
 
   React.useEffect(() => {
     // Create a scene
@@ -57,7 +52,7 @@ const Scene = () => {
 
     // FPS counter
     const stats = new Stats();
-    fpsRef.current.appendChild(stats.dom);
+    // fpsRef.current.appendChild(stats.dom);
 
     // Interaction (clicks)
     new Interaction(renderer, scene, camera);
@@ -100,36 +95,44 @@ const Scene = () => {
     };
 
     Promise.all([
-      loadAsync(
-        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/office.glb'
-      ),
-      loadAsync(
-        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/typewriter.glb'
-      ),
-      loadAsync(
-        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/closure_paper3.glb'
-      ),
-      loadAsync(
-        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/script.glb'
-      ),
-      // loadAsync('/scene/office.glb'),
-      // loadAsync('/scene/items/typewriter.glb'),
-      // loadAsync('/scene/items/closure_paper3.glb'),
-      // loadAsync('/scene/items/script.glb'),
+      // loadAsync(
+      //   'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/office.glb'
+      // ),
+      // loadAsync(
+      //   'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/typewriter.glb'
+      // ),
+      // loadAsync(
+      //   'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/closure_paper3.glb'
+      // ),
+      // loadAsync(
+      //   'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/script.glb'
+      // ),
+      loadAsync('/scene/office.glb'),
+      loadAsync('/scene/items/closure_paper.glb'),
+      loadAsync('/scene/items/glass.glb'),
+      loadAsync('/scene/items/king.glb'),
+      loadAsync('/scene/items/open_folder.glb'),
+      loadAsync('/scene/items/paper_left.glb'),
+      loadAsync('/scene/items/portrait.glb'),
+      loadAsync('/scene/items/typewritter.glb'),
     ]).then((models) => {
       // Set context for individual items
       const individuals = models.filter((model, i) => i !== 0);
 
-      console.log(models);
       dispatch({
         type: 'field',
         field: 'models',
         payload: {
-          typewriter: individuals[0],
-          closure_paper3: individuals[1],
-          script: individuals[2],
+          closure_paper: individuals[0],
+          glass: individuals[1],
+          king: individuals[2],
+          open_folder: individuals[3],
+          paper_left: individuals[4],
+          portrait: individuals[5],
+          typewritter: individuals[6],
         },
       });
+
       // Get office model
       const office = models[0];
 
@@ -150,49 +153,118 @@ const Scene = () => {
 
       const interactiveObjects = office.scene.children.filter(
         (item) =>
-          // item.name === 'folder' ||
-          item.name === 'typewriter' ||
-          item.name === 'closure_paper3' ||
-          item.name === 'script_1' ||
-          item.name === 'script_2' ||
-          item.name === 'script_3' ||
-          // item.name === 'death_cert_2' ||
-          // item.name === 'portraid' ||
-          item.name === 'office_furniture'
+          item.name === 'Desk' ||
+          item.name === 'closure_paper' ||
+          item.name === 'script' ||
+          item.name === 'casting_sheet' ||
+          item.name === 'king' ||
+          item.name === 'typewritter' ||
+          item.name === 'portrait' ||
+          item.name === 'glass' ||
+          item.name === 'folder_with_certificate'
       );
 
       // Add click listener
       interactiveObjects.forEach((el) => {
         el.on('mouseover', () => {
-          document.body.style.cursor = 'pointer';
+          if (el.name === 'Desk') {
+            return new TWEEN.Tween(el.children[0].material.color)
+              .to({ r: 1.8, g: 1.8, b: 1.1 }, 300)
+              .easing(TWEEN.Easing.Quadratic.InOut)
+              .start();
+            // return highlight(true, el);
+          }
+
+          if (el.name === 'typewritter') {
+            return new TWEEN.Tween(el.children[0].material.color)
+              .to({ r: 0.75, g: 0.55, b: 0.16 }, 300)
+              .easing(TWEEN.Easing.Quadratic.InOut)
+              .start();
+          }
+
+          if (el.name === 'closure_paper') {
+            return new TWEEN.Tween(el.children[0].material.color)
+              .to({ r: 0.75, g: 0.62, b: 0.24 }, 300)
+              .easing(TWEEN.Easing.Quadratic.InOut)
+              .start();
+          }
         });
 
         el.on('mouseout', () => {
-          document.body.style.cursor = 'default';
+          if (el.name === 'Desk') {
+            // return highlight(false, el);
+            return new TWEEN.Tween(el.children[0].material.color)
+              .to({ r: 1, g: 1, b: 1 }, 300)
+              .easing(TWEEN.Easing.Quadratic.InOut)
+              .start();
+          }
+
+          if (el.name === 'typewritter') {
+            return new TWEEN.Tween(el.children[0].material.color)
+              .to({ r: 0.002899999963119626, g: 0.029999999329447746, b: 0 }, 300)
+              .easing(TWEEN.Easing.Quadratic.InOut)
+              .start();
+          }
+
+          if (el.name === 'closure_paper') {
+            return new TWEEN.Tween(el.children[0].material.color)
+              .to({ r: 1, g: 1, b: 1 }, 300)
+              .easing(TWEEN.Easing.Quadratic.InOut)
+              .start();
+          }
         });
 
         el.on('click', () => {
-          if (el.name === 'office_furniture') {
+          let selected = '';
+
+          if (el.name === 'Desk') {
+            new TWEEN.Tween(instructionRef.current.style)
+              .to({ opacity: 0 }, 2000)
+              .easing(TWEEN.Easing.Quadratic.InOut)
+              .onComplete(() => (instructionRef.current.style.visibility = 'hidden'))
+              .start();
+
+            new TWEEN.Tween(backtoseatRef.current.style)
+              .to({ opacity: 1 }, 1000)
+              .easing(TWEEN.Easing.Quadratic.InOut)
+              .onStart(() => (backtoseatRef.current.style.visibility = 'visible'))
+              .start();
+
             new TWEEN.Tween(camera.position)
-              .to({ x: 62, y: 10, z: -20 }, 2000)
+              .to({ x: 62, y: 15, z: -20 }, 2000)
               .easing(TWEEN.Easing.Quadratic.InOut)
               .start();
 
             new TWEEN.Tween(controls.target)
-              .to({ x: 62, y: -20, z: -40 }, 2000)
+              .to({ x: 62, y: -20, z: -35 }, 2000)
               .easing(TWEEN.Easing.Quadratic.InOut)
               .start();
 
             return;
           }
 
+          if (el.name === 'casting_sheet' || el.name === 'script') {
+            selected = 'paper_left';
+          }
+
+          if (el.name === 'folder_with_certificate') {
+            selected = 'open_folder';
+          }
+
+          if (
+            el.name === 'portrait' ||
+            el.name === 'glass' ||
+            el.name === 'typewritter' ||
+            el.name === 'closure_paper' ||
+            el.name === 'king'
+          ) {
+            selected = el.name;
+          }
+
           dispatch({
             type: 'field',
             field: 'selectedItem',
-            payload:
-              el.name === 'script_1' || el.name === 'script_2' || el.name === 'script_3'
-                ? 'script'
-                : el.name,
+            payload: selected,
           });
 
           dispatch({
@@ -217,12 +289,24 @@ const Scene = () => {
     // Controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.target = new THREE.Vector3(0, -20, 0);
-    controls.enabled = false; // disable cursor orbit
+    // controls.enabled = false; // disable cursor orbit
     controls.enableDamping = true;
     controls.dampingFactor = 0.02;
 
     // Back button
-    backToSeatRef.current.addEventListener('click', () => {
+    backtoseatRef.current.addEventListener('click', () => {
+      new TWEEN.Tween(instructionRef.current.style)
+        .to({ opacity: 1 }, 1000)
+        .easing(TWEEN.Easing.Quadratic.InOut)
+        .onStart(() => (instructionRef.current.style.visibility = 'visible'))
+        .start();
+
+      new TWEEN.Tween(backtoseatRef.current.style)
+        .to({ opacity: 0 }, 1000)
+        .easing(TWEEN.Easing.Quadratic.InOut)
+        .onComplete(() => (backtoseatRef.current.style.visibility = 'hidden'))
+        .start();
+
       new TWEEN.Tween(camera.position)
         .to({ x: 115, y: -10, z: -110 }, 2000)
         .easing(TWEEN.Easing.Quadratic.InOut)
@@ -233,19 +317,6 @@ const Scene = () => {
         .easing(TWEEN.Easing.Quadratic.InOut)
         .start();
     });
-
-    // Camera move based on mouse interaction
-    var mouse = { x: 0, y: 0 };
-
-    function mouseMove(e) {
-      camera.position.x += Math.max(Math.min((mouse.x - e.clientX) * 0.01, 0.2), -0.2);
-      camera.position.y += Math.max(Math.min((mouse.y - e.clientY) * 0.01, 0.2), -0.2);
-
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    }
-
-    // window.addEventListener('mousemove', mouseMove);
 
     const handleWindowResize = () => {
       const width = sceneRef.current.clientWidth;
@@ -285,13 +356,7 @@ const Scene = () => {
   }, [dispatch]);
 
   return (
-    <Suspense fallback={<Loading />}>
-      <Loading />
-      {state.selectedItem !== '' && <ItemInspector />}
-      <button ref={backToSeatRef} style={{ position: 'absolute', top: '0', left: '0', zIndex: 2 }}>
-        Back to the seat
-      </button>
-
+    <Suspense fallback={'loading'}>
       <div ref={sceneRef} className="scene" />
       <div ref={fpsRef} className="fps" />
     </Suspense>

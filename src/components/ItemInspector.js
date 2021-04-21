@@ -6,12 +6,11 @@ import { ReactComponent as CloseIcon } from '../assets/svg/close.svg';
 
 // Three
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
 
 // Context
 import { Context } from './Context';
-import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
 
 const ItemInspector = () => {
   /**
@@ -61,7 +60,7 @@ const ItemInspector = () => {
       );
 
       // Set camera position
-      camera.position.set(0, 0, 50);
+      camera.position.set(0, 0, 100);
 
       // Shows axis
       const axesHelper = new THREE.AxesHelper(105);
@@ -69,16 +68,38 @@ const ItemInspector = () => {
 
       // Lights
       const light = new THREE.AmbientLight('#ffffff', 1);
-      light.position.set(new THREE.Vector3(10, 0, 0));
+      light.position.set(new THREE.Vector3(0, 30, 50));
       scene.add(light);
+
+      const pLight1 = new THREE.PointLight('white', 1, 0);
+      pLight1.position.set(20, 50, 50);
+      scene.add(pLight1);
+
+      const pLight2 = new THREE.PointLight('white', 0.4, 0);
+      pLight2.position.set(-50, 50, 20);
+      scene.add(pLight2);
+
+      // const sphereSize = 20;
+      // const pointLightHelper1 = new THREE.PointLightHelper(pLight1, sphereSize);
+      // scene.add(pointLightHelper1);
+      // const pointLightHelper2 = new THREE.PointLightHelper(pLight2, sphereSize);
+      // scene.add(pointLightHelper2);
+
+      // const directionalLight = new THREE.DirectionalLight(
+      //   0xffffff,
+      //   selectedItem === 'typewriter' ? 1 : 0.3
+      // );
+      // directionalLight.position.set(0, 15, 80);
+      // scene.add(directionalLight);
+
+      // const helper = new THREE.DirectionalLightHelper(directionalLight, 5);
+      // scene.add(helper);
 
       // Add model to scene
       const model = models[selectedItem];
 
       model.scene.position.set(0, 0, 0);
       model.scene.scale.set(100, 100, 100);
-
-      console.log(model.scene);
 
       model.scene.traverse(function (child) {
         if (child.isMesh) {
@@ -92,7 +113,7 @@ const ItemInspector = () => {
 
       // Controls
       const controls = new OrbitControls(camera, renderer.domElement);
-      controls.enablePan = false;
+      // controls.enablePan = false;
       controls.enableDamping = true;
       controls.dampingFactor = 0.02;
 

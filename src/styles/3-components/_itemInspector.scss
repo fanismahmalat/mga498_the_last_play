@@ -14,27 +14,78 @@
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 1000;
+  z-index: 10003;
 
   .recenter-btn {
     position: absolute;
-    left: 20px;
-    top: 20px;
+    right: 45px;
+    top: 60px;
     z-index: 2;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    color: white;
+    font-family: $montserrat;
+    font-size: 0.9rem;
+    background-color: rgba(109, 68, 68, 0.7);
+    padding: 10px 15px;
+    border-radius: 59px;
+    @include transition;
+
+    &:hover {
+      background-color: rgba(109, 68, 68, 1);
+    }
   }
 
   .animation-toggle-btn {
     position: absolute;
-    left: 100px;
-    top: 20px;
+    right: 45px;
+    top: 110px;
     z-index: 2;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    color: white;
+    font-family: $montserrat;
+    font-size: 0.9rem;
+    background-color: rgba(109, 68, 68, 0.7);
+    padding: 10px 15px;
+    border-radius: 59px;
+    @include transition;
+
+    &:hover {
+      background-color: rgba(109, 68, 68, 1);
+    }
   }
 
   .close-btn {
     position: absolute;
-    right: 20px;
     top: 20px;
+    right: 45px;
     z-index: 2;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    @include transition;
+
+    svg {
+      width: 20px;
+      height: 20px;
+
+      path {
+        @include transition;
+        stroke: white;
+      }
+    }
+
+    &:hover {
+      svg {
+        path {
+          stroke: rgb(213, 213, 213);
+        }
+      }
+    }
   }
 
   .item-container {
