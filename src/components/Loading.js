@@ -1,4 +1,6 @@
 import React from 'react';
+import Sound from 'react-sound';
+import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
 
 // Assets
 import logo from '../assets/logo.png';
@@ -21,6 +23,11 @@ SwiperCore.use([Autoplay, EffectFade]);
 
 const Loading = () => {
   /**
+   * State
+   */
+  const [playing, setPlaying] = React.useState(false);
+
+  /**
    * Context
    */
   const {
@@ -30,6 +37,7 @@ const Loading = () => {
   const [showLoadingScreen, setShowLoadingScreen] = React.useState(true);
 
   const swiperRef = React.useRef(null);
+  const introTextRef = React.useRef(null);
 
   const images = [
     'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/src/assets/concept_art/1.jpg',
@@ -45,6 +53,16 @@ const Loading = () => {
         pointerEvents: showLoadingScreen ? 'all' : 'none',
       }}
     >
+      <Sound
+        url="https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/sound/intro.mp3"
+        autoLoad={true}
+        playStatus={playing ? Sound.status.PLAYING : Sound.status.STOPPED}
+        volume={100}
+        onFinishedPlaying={() => {
+          setShowLoadingScreen(false);
+          setPlaying(false);
+        }}
+      />
       <div className="concept-art">
         <Swiper ref={swiperRef} slidesPerView={1} autoplay={{ delay: 3000 }} effect="fade">
           {images.map((img, i) => (
@@ -59,26 +77,38 @@ const Loading = () => {
       <h1 className="title">The Last Play</h1>
 
       <div className="loading-inner">
+        <p ref={introTextRef} className="intro-text">
+          "The last play® is my magnum opus, my mark on history if you will. The last play though is
+          the swan song of my theater. Let us witness what occured before it, that led me to shut
+          down my theater."
+        </p>
         <div
+          className="progress-bar"
           style={{
             display: sceneProgress !== 100 ? 'block' : 'none',
-            marginBottom: 30,
           }}
         >
           <span>Loading...</span>
           <LinearProgress variant="buffer" valueBuffer={sceneProgress} value={sceneProgress} />
         </div>
-        <button
-          className="begin-btn"
-          style={{
-            // opacity: sceneProgress !== 100 ? '0' : '1',
-            // pointerEvents: sceneProgress !== 100 ? 'none' : 'all',
-            display: sceneProgress !== 100 ? 'none' : 'block',
-          }}
-          onClick={() => setShowLoadingScreen(!showLoadingScreen)}
-        >
-          Start the experience
-        </button>
+
+        {sceneProgress === 100 && (
+          <button
+            className="begin-btn"
+            onClick={(e) => {
+              new TWEEN.Tween(e.target.style)
+                .to({ opacity: 0 }, 1000)
+                .easing(TWEEN.Easing.Quadratic.InOut)
+                .onComplete(() => (e.target.style.visibility = 'hidden'))
+                .start();
+
+              setPlaying(true);
+              introTextRef.current.classList.add('intro-anim-start');
+            }}
+          >
+            Start the experience
+          </button>
+        )}
       </div>
     </div>
   );

@@ -39,8 +39,8 @@ const Nav = ({ instructionRef, backtoseatRef }) => {
   }, []);
 
   React.useEffect(() => {
-    state.ambientSoundPlaying ? animRef.current.play() : animRef.current.stop();
-  }, [state.ambientSoundPlaying]);
+    state.soundEnabled ? animRef.current.play() : animRef.current.stop();
+  }, [state.soundEnabled]);
 
   const showAbout = () => {
     dispatch({
@@ -50,17 +50,15 @@ const Nav = ({ instructionRef, backtoseatRef }) => {
     });
   };
 
-  const handleAmbientSound = () => {
+  const handleSound = () => {
     dispatch({
       type: 'field',
-      field: 'ambientSoundPlaying',
-      payload: !state.ambientSoundPlaying,
+      field: 'soundEnabled',
+      payload: !state.soundEnabled,
     });
-
     const fadeInterval = setInterval(() => {
-      let playing = !state.ambientSoundPlaying;
+      let playing = !state.soundEnabled;
       let value = playing ? 0.05 : -0.05;
-
       if (
         (!playing && state.ambientSoundVolume <= 0) ||
         (playing && state.ambientSoundVolume >= 20)
@@ -68,7 +66,6 @@ const Nav = ({ instructionRef, backtoseatRef }) => {
         clearInterval(fadeInterval);
         return;
       }
-
       dispatch({
         type: 'field',
         field: 'ambientSoundVolume',
@@ -96,7 +93,7 @@ const Nav = ({ instructionRef, backtoseatRef }) => {
 
       <div className="links">
         <button onClick={showAbout}>about</button>
-        <button title="Toggle music on/off" onClick={handleAmbientSound}>
+        <button title="Toggle music on/off" onClick={handleSound}>
           <div className="volume" ref={animElRef} />
         </button>
       </div>

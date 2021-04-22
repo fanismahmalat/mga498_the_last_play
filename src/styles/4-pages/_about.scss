@@ -53,6 +53,7 @@
 
     &::-webkit-scrollbar {
       width: 3px;
+      height: 3px;
     }
 
     &::-webkit-scrollbar-track {
@@ -113,6 +114,35 @@
       display: block;
       margin-top: 40px;
       image-rendering: optimizeQuality;
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .about-page {
+    .container {
+      width: 80%;
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .about-page {
+    .container {
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .about-page {
+    .container {
+      .cut-logo {
+        height: 45px;
+      }
     }
   }
 }

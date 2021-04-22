@@ -15,7 +15,8 @@ const App = () => {
     <Context.Provider value={{ state, dispatch }}>
       <div className="app">
         <Sound
-          url="/scene/sound/icanhearthebells.mp3"
+          url="https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/sound/icanhearthebells.mp3"
+          autoLoad={true}
           playStatus={Sound.status.PLAYING}
           loop={true}
           volume={state.ambientSoundVolume}

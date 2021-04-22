@@ -16,8 +16,8 @@ export const SettingsReducer = (state, action) => {
 };
 
 export const initialState = {
-  ambientSoundPlaying: true,
-  ambientSoundVolume: 20,
+  soundEnabled: true,
+  ambientSoundVolume: 5,
   sceneProgress: 0,
   aboutOpen: false,
   itemInspectorOpen: false,
