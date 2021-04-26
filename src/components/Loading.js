@@ -26,13 +26,14 @@ const Loading = () => {
    * State
    */
   const [introPlaying, setIntroPlaying] = React.useState(false);
+  const [ambientPlaying, setAmbientPlaying] = React.useState(false);
   const [showLoadingScreen, setShowLoadingScreen] = React.useState(true);
 
   /**
    * Context
    */
   const {
-    state: { sceneProgress },
+    state: { sceneProgress, ambientSoundVolume },
   } = React.useContext(Context);
 
   /**
@@ -55,6 +56,14 @@ const Loading = () => {
         pointerEvents: showLoadingScreen ? 'all' : 'none',
       }}
     >
+      <Sound
+        url="https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/sound/icanhearthebells.mp3"
+        autoLoad={true}
+        playStatus={ambientPlaying ? Sound.status.PLAYING : Sound.status.STOPPED}
+        loop={true}
+        volume={ambientSoundVolume}
+        onError={(code, desc) => console.log(code, desc)}
+      />
       <Sound
         url="/scene/sound/intro.mp3"
         autoLoad={true}
@@ -106,6 +115,7 @@ const Loading = () => {
                   .start();
 
                 setIntroPlaying(true);
+                setAmbientPlaying(true);
                 introTextRef.current.classList.add('intro-anim-start');
               }}
             >
@@ -116,6 +126,7 @@ const Loading = () => {
               onClick={() => {
                 setShowLoadingScreen(false);
                 setIntroPlaying(false);
+                setAmbientPlaying(true);
               }}
             >
               Skip intro

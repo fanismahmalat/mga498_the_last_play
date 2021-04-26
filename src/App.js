@@ -1,5 +1,5 @@
 import React from 'react';
-import Sound from 'react-sound';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 // Context
 import Wrapper from './components/Wrapper';
@@ -11,18 +11,27 @@ const App = () => {
    */
   const [state, dispatch] = React.useReducer(SettingsReducer, initialState);
 
+  /**
+   * State
+   */
+
   return (
     <Context.Provider value={{ state, dispatch }}>
       <div className="app">
-        <Sound
-          url="/scene/sound/icanhearthebells.mp3"
-          autoLoad={true}
-          playStatus={Sound.status.PLAYING}
-          loop={true}
-          volume={state.ambientSoundVolume}
-          onError={(code, desc) => console.log(code, desc)}
-        />
-        <Wrapper />
+        <Router>
+          <Switch>
+            <Route exact path="/" component={Wrapper} />
+            <Route
+              exact
+              path="/book"
+              component={() => {
+                window.location.href =
+                  'https://www.tickettailor.com/events/thelastplay/516981/select-date';
+                return null;
+              }}
+            />
+          </Switch>
+        </Router>
       </div>
     </Context.Provider>
   );
