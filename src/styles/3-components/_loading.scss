@@ -89,8 +89,22 @@
       }
     }
 
+    .skip-btn {
+      background-color: transparent;
+      border: none;
+      color: white;
+      font-family: $montserrat;
+      font-size: 0.85rem;
+      font-weight: 300;
+      margin: auto;
+      margin-top: 10px;
+      display: block;
+      cursor: pointer;
+    }
+
     .begin-btn {
       @include transition;
+      overflow: hidden;
       padding: 12px 22px;
       background-color: transparent;
       border: 1px solid white;
@@ -102,6 +116,8 @@
       display: block;
       margin: auto;
       cursor: pointer;
+      width: 200px;
+      text-align: center;
 
       &:hover {
         background-color: white;

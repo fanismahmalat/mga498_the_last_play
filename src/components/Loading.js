@@ -25,7 +25,8 @@ const Loading = () => {
   /**
    * State
    */
-  const [playing, setPlaying] = React.useState(false);
+  const [introPlaying, setIntroPlaying] = React.useState(false);
+  const [showLoadingScreen, setShowLoadingScreen] = React.useState(true);
 
   /**
    * Context
@@ -34,8 +35,9 @@ const Loading = () => {
     state: { sceneProgress },
   } = React.useContext(Context);
 
-  const [showLoadingScreen, setShowLoadingScreen] = React.useState(true);
-
+  /**
+   * Refs
+   */
   const swiperRef = React.useRef(null);
   const introTextRef = React.useRef(null);
 
@@ -54,13 +56,13 @@ const Loading = () => {
       }}
     >
       <Sound
-        url="https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/sound/intro.mp3"
+        url="/scene/sound/intro.mp3"
         autoLoad={true}
-        playStatus={playing ? Sound.status.PLAYING : Sound.status.STOPPED}
-        volume={100}
+        playStatus={introPlaying ? Sound.status.PLAYING : Sound.status.STOPPED}
+        volume={70}
         onFinishedPlaying={() => {
           setShowLoadingScreen(false);
-          setPlaying(false);
+          setIntroPlaying(false);
         }}
       />
       <div className="concept-art">
@@ -93,21 +95,32 @@ const Loading = () => {
         </div>
 
         {sceneProgress === 100 && (
-          <button
-            className="begin-btn"
-            onClick={(e) => {
-              new TWEEN.Tween(e.target.style)
-                .to({ opacity: 0 }, 1000)
-                .easing(TWEEN.Easing.Quadratic.InOut)
-                .onComplete(() => (e.target.style.visibility = 'hidden'))
-                .start();
+          <>
+            <div
+              className="begin-btn"
+              onClick={(e) => {
+                new TWEEN.Tween(e.target.style)
+                  .to({ opacity: 0, height: 0, padding: 0 }, 1000)
+                  .easing(TWEEN.Easing.Quadratic.InOut)
+                  .onComplete(() => (e.target.style.visibility = 'hidden'))
+                  .start();
 
-              setPlaying(true);
-              introTextRef.current.classList.add('intro-anim-start');
-            }}
-          >
-            Start the experience
-          </button>
+                setIntroPlaying(true);
+                introTextRef.current.classList.add('intro-anim-start');
+              }}
+            >
+              Start the experience
+            </div>
+            <button
+              className="skip-btn"
+              onClick={() => {
+                setShowLoadingScreen(false);
+                setIntroPlaying(false);
+              }}
+            >
+              Skip intro
+            </button>
+          </>
         )}
       </div>
     </div>

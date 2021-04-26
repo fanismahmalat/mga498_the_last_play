@@ -61,7 +61,7 @@ const Nav = ({ instructionRef, backtoseatRef }) => {
       let value = playing ? 0.05 : -0.05;
       if (
         (!playing && state.ambientSoundVolume <= 0) ||
-        (playing && state.ambientSoundVolume >= 20)
+        (playing && state.ambientSoundVolume >= 12)
       ) {
         clearInterval(fadeInterval);
         return;
