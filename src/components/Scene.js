@@ -80,10 +80,10 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
       loadAsync(
         'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/Office_.glb'
       ),
-      loadAsync('/scene/individuals/glass.glb'),
-      // loadAsync(
-      //   'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/individuals/glass.glb'
-      // ),
+      // loadAsync('/scene/individuals/glass.glb'),
+      loadAsync(
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/individuals/glass.glb'
+      ),
       // loadAsync('/scene/individuals/closure_paper.glb'),
       loadAsync(
         'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/individuals/closure_paper.glb'
