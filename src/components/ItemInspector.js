@@ -24,7 +24,7 @@ const ItemInspector = () => {
    * Context
    */
   const {
-    state: { selectedItem, itemInspectorOpen, itemAnimationEnabled, models },
+    state: { selectedItem, itemInspectorOpen, soundEnabled, itemAnimationEnabled, models },
     dispatch,
   } = React.useContext(Context);
 
@@ -237,7 +237,7 @@ const ItemInspector = () => {
             playStatus={voiceOverPlayed ? Sound.status.STOPPED : Sound.status.PLAYING}
             onFinishedPlaying={() => setVoiceOverPlayed(true)}
             loop={false}
-            volume={100}
+            volume={soundEnabled ? 100 : 0}
           />
         ) : null}
 
