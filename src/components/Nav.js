@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import lottie from 'lottie-web';
 import soundwaves from '../assets/soundwaves.json';
 
@@ -82,7 +83,7 @@ const Nav = ({ instructionRef, backtoseatRef }) => {
         <div ref={instructionRef} className="ui-desk">
           <div className="inner">
             <InfoIcon />
-            <p>Start exploring by clicking on the desk</p>
+            <p id="text">Start exploring by clicking on the desk</p>
           </div>
         </div>
       </div>
@@ -92,6 +93,9 @@ const Nav = ({ instructionRef, backtoseatRef }) => {
       </div>
 
       <div className="links">
+        <Link to="/book" target="_blank" rel="noopener noreferrer">
+          book your ticket
+        </Link>
         <button onClick={showAbout}>about</button>
         <button title="Toggle music on/off" onClick={handleSound}>
           <div className="volume" ref={animElRef} />

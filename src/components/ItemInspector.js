@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import Sound from 'react-sound';
 
 // Assets
 import { ReactComponent as CloseIcon } from '../assets/svg/close.svg';
@@ -13,6 +14,12 @@ import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
 import { Context } from './Context';
 
 const ItemInspector = () => {
+  /**
+   * State
+   */
+  const [sound, setSound] = React.useState('');
+  const [voiceOverPlayed, setVoiceOverPlayed] = React.useState(true);
+
   /**
    * Context
    */
@@ -33,6 +40,16 @@ const ItemInspector = () => {
    */
   React.useEffect(() => {
     if (selectedItem !== '') {
+      if (
+        selectedItem === 'king' ||
+        selectedItem === 'glass' ||
+        selectedItem === 'portrait' ||
+        selectedItem === 'typewriter'
+      ) {
+        setSound(selectedItem);
+        setVoiceOverPlayed(false);
+      }
+
       // Create a scene
       const scene = new THREE.Scene();
       // scene.background = new THREE.Color('#F7F9FB');
@@ -66,46 +83,17 @@ const ItemInspector = () => {
       const axesHelper = new THREE.AxesHelper(105);
       scene.add(axesHelper);
 
-      // Lights
-      const light = new THREE.AmbientLight('#ffffff', 1);
-      light.position.set(new THREE.Vector3(0, 30, 50));
-      scene.add(light);
-
-      const pLight1 = new THREE.PointLight('white', 1, 0);
-      pLight1.position.set(20, 50, 50);
-      scene.add(pLight1);
-
-      const pLight2 = new THREE.PointLight('white', 0.4, 0);
-      pLight2.position.set(-50, 50, 20);
-      scene.add(pLight2);
-
-      // const sphereSize = 20;
-      // const pointLightHelper1 = new THREE.PointLightHelper(pLight1, sphereSize);
-      // scene.add(pointLightHelper1);
-      // const pointLightHelper2 = new THREE.PointLightHelper(pLight2, sphereSize);
-      // scene.add(pointLightHelper2);
-
-      // const directionalLight = new THREE.DirectionalLight(
-      //   0xffffff,
-      //   selectedItem === 'typewriter' ? 1 : 0.3
-      // );
-      // directionalLight.position.set(0, 15, 80);
-      // scene.add(directionalLight);
-
-      // const helper = new THREE.DirectionalLightHelper(directionalLight, 5);
-      // scene.add(helper);
-
       // Add model to scene
       const model = models[selectedItem];
 
       model.scene.position.set(0, 0, 0);
-      model.scene.scale.set(100, 100, 100);
+      model.scene.scale.set(120, 120, 120);
 
       model.scene.traverse(function (child) {
         if (child.isMesh) {
-          let m = child;
-          m.receiveShadow = true;
-          m.castShadow = true;
+          child.transparent = true;
+          child.receiveShadow = true;
+          child.castShadow = true;
         }
       });
 
@@ -113,13 +101,13 @@ const ItemInspector = () => {
 
       // Controls
       const controls = new OrbitControls(camera, renderer.domElement);
-      // controls.enablePan = false;
+      controls.enablePan = false;
       controls.enableDamping = true;
       controls.dampingFactor = 0.02;
 
       recenterRef.current.addEventListener('click', () => {
         new TWEEN.Tween(camera.position)
-          .to({ x: 0, y: 0, z: 50 }, 1000)
+          .to({ x: 0, y: 0, z: 100 }, 1000)
           .easing(TWEEN.Easing.Quadratic.InOut)
           .start();
 
@@ -242,6 +230,17 @@ const ItemInspector = () => {
         transition={{ duration: 0.8, ease: 'easeInOut' }}
         className="item-wrapper"
       >
+        {sound !== '' ? (
+          <Sound
+            url={`https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/sound/${sound}.mp3`}
+            autoLoad={true}
+            playStatus={voiceOverPlayed ? Sound.status.STOPPED : Sound.status.PLAYING}
+            onFinishedPlaying={() => setVoiceOverPlayed(true)}
+            loop={false}
+            volume={100}
+          />
+        ) : null}
+
         <button className="close-btn" onClick={handleCloseInspector}>
           <CloseIcon />
         </button>

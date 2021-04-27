@@ -61,25 +61,6 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
     const axesHelper = new THREE.AxesHelper(105);
     scene.add(axesHelper);
 
-    // Lights
-    const light = new THREE.AmbientLight('#ffffff', 0.6);
-    light.position.set(new THREE.Vector3(0, 50, 0));
-    scene.add(light);
-
-    const pLight1 = new THREE.PointLight('white', 0.8, 0);
-    pLight1.position.set(150, 0, -50);
-    scene.add(pLight1);
-
-    const pLight2 = new THREE.PointLight('white', 0.6, 0);
-    pLight2.position.set(-50, 0, -50);
-    scene.add(pLight2);
-
-    const sphereSize = 20;
-    const pointLightHelper1 = new THREE.PointLightHelper(pLight1, sphereSize);
-    scene.add(pointLightHelper1);
-    const pointLightHelper2 = new THREE.PointLightHelper(pLight2, sphereSize);
-    scene.add(pointLightHelper2);
-
     // const gridHelper = new THREE.GridHelper(500, 20);
     // scene.add(gridHelper);
 
@@ -95,29 +76,37 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
     };
 
     Promise.all([
-      loadAsync(
-        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/office.glb'
-      ),
+      // loadAsync('/scene/Office_.glb'),
+      // loadAsync(
+      //   'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/Office_.glb'
+      // ),
+      // loadAsync('/scene/items/glass.glb'),
       loadAsync(
         'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/glass.glb'
       ),
+      // loadAsync('/scene/items/closure_paper.glb'),
       loadAsync(
         'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/closure_paper.glb'
       ),
+      // loadAsync('/scene/items/king.glb'),
       loadAsync(
         'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/king.glb'
       ),
+      // loadAsync('/scene/items/open_folder.glb'),
       loadAsync(
         'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/open_folder.glb'
       ),
+      // loadAsync('/scene/items/paper_left.glb'),
       loadAsync(
         'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/paper_left.glb'
       ),
+      // loadAsync('/scene/items/portrait.glb'),
       loadAsync(
         'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/portrait.glb'
       ),
+      // loadAsync('/scene/items/typewriter.glb'),
       loadAsync(
-        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/typewritter.glb'
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/typewriter.glb'
       ),
     ]).then((models) => {
       // Set context for individual items
@@ -127,13 +116,13 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
         type: 'field',
         field: 'models',
         payload: {
-          closure_paper: individuals[0],
-          glass: individuals[1],
+          glass: individuals[0],
+          closure_paper: individuals[1],
           king: individuals[2],
           open_folder: individuals[3],
           paper_left: individuals[4],
           portrait: individuals[5],
-          typewritter: individuals[6],
+          typewriter: individuals[6],
         },
       });
 
@@ -146,9 +135,12 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
 
       office.scene.traverse(function (child) {
         if (child.isMesh) {
-          let m = child;
-          m.receiveShadow = true;
-          m.castShadow = true;
+          child.receiveShadow = true;
+          child.castShadow = true;
+        }
+
+        if (child.isLight) {
+          child.castShadow = true;
         }
       });
 
@@ -162,7 +154,7 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
           item.name === 'script' ||
           item.name === 'casting_sheet' ||
           item.name === 'king' ||
-          item.name === 'typewritter' ||
+          item.name === 'typewriter' ||
           item.name === 'portrait' ||
           item.name === 'glass' ||
           item.name === 'folder_with_certificate'
@@ -176,15 +168,14 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
               .to({ r: 1.8, g: 1.8, b: 1.1 }, 300)
               .easing(TWEEN.Easing.Quadratic.InOut)
               .start();
-            // return highlight(true, el);
           }
 
-          if (el.name === 'typewritter') {
-            return new TWEEN.Tween(el.children[0].material.color)
-              .to({ r: 0.75, g: 0.55, b: 0.16 }, 300)
-              .easing(TWEEN.Easing.Quadratic.InOut)
-              .start();
-          }
+          // if (el.name === 'typewriter') {
+          //   return new TWEEN.Tween(el.children[0].material.color)
+          //     .to({ r: 0.75, g: 0.55, b: 0.16 }, 300)
+          //     .easing(TWEEN.Easing.Quadratic.InOut)
+          //     .start();
+          // }
 
           if (el.name === 'closure_paper') {
             return new TWEEN.Tween(el.children[0].material.color)
@@ -196,19 +187,18 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
 
         el.on('mouseout', () => {
           if (el.name === 'Desk') {
-            // return highlight(false, el);
             return new TWEEN.Tween(el.children[0].material.color)
               .to({ r: 1, g: 1, b: 1 }, 300)
               .easing(TWEEN.Easing.Quadratic.InOut)
               .start();
           }
 
-          if (el.name === 'typewritter') {
-            return new TWEEN.Tween(el.children[0].material.color)
-              .to({ r: 0.002899999963119626, g: 0.029999999329447746, b: 0 }, 300)
-              .easing(TWEEN.Easing.Quadratic.InOut)
-              .start();
-          }
+          // if (el.name === 'typewriter') {
+          //   return new TWEEN.Tween(el.children[0].material.color)
+          //     .to({ r: 0.002899999963119626, g: 0.029999999329447746, b: 0 }, 300)
+          //     .easing(TWEEN.Easing.Quadratic.InOut)
+          //     .start();
+          // }
 
           if (el.name === 'closure_paper') {
             return new TWEEN.Tween(el.children[0].material.color)
@@ -222,17 +212,11 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
           let selected = '';
 
           if (el.name === 'Desk') {
-            new TWEEN.Tween(instructionRef.current.style)
-              .to({ opacity: 0 }, 2000)
-              .easing(TWEEN.Easing.Quadratic.InOut)
-              .onComplete(() => (instructionRef.current.style.visibility = 'hidden'))
-              .start();
-
-            new TWEEN.Tween(backtoseatRef.current.style)
-              .to({ opacity: 1 }, 1000)
-              .easing(TWEEN.Easing.Quadratic.InOut)
-              .onStart(() => (backtoseatRef.current.style.visibility = 'visible'))
-              .start();
+            backtoseatRef.current.style.opacity = 1;
+            backtoseatRef.current.style.pointerEvents = 'all';
+            console.log(instructionRef.current);
+            instructionRef.current.querySelector('#text').innerHTML =
+              'Click on the items to inspect them';
 
             new TWEEN.Tween(camera.position)
               .to({ x: 62, y: 15, z: -20 }, 2000)
@@ -258,7 +242,7 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
           if (
             el.name === 'portrait' ||
             el.name === 'glass' ||
-            el.name === 'typewritter' ||
+            el.name === 'typewriter' ||
             el.name === 'closure_paper' ||
             el.name === 'king'
           ) {
@@ -299,17 +283,10 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
 
     // Back button
     backtoseatRef.current.addEventListener('click', () => {
-      new TWEEN.Tween(instructionRef.current.style)
-        .to({ opacity: 1 }, 1000)
-        .easing(TWEEN.Easing.Quadratic.InOut)
-        .onStart(() => (instructionRef.current.style.visibility = 'visible'))
-        .start();
-
-      new TWEEN.Tween(backtoseatRef.current.style)
-        .to({ opacity: 0 }, 1000)
-        .easing(TWEEN.Easing.Quadratic.InOut)
-        .onComplete(() => (backtoseatRef.current.style.visibility = 'hidden'))
-        .start();
+      backtoseatRef.current.style.opacity = 0;
+      backtoseatRef.current.style.pointerEvents = 'none';
+      instructionRef.current.querySelector('#text').innerHTML =
+        'Start exploring by clicking on the desk';
 
       new TWEEN.Tween(camera.position)
         .to({ x: 115, y: -10, z: -110 }, 2000)

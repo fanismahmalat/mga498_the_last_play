@@ -25,8 +25,7 @@ const App = () => {
               exact
               path="/book"
               component={() => {
-                window.location.href =
-                  'https://www.tickettailor.com/events/thelastplay/516981/select-date';
+                window.location.href = 'https://www.tickettailor.com/events/thelastplay/516981';
                 return null;
               }}
             />

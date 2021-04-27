@@ -65,7 +65,7 @@ const Loading = () => {
         onError={(code, desc) => console.log(code, desc)}
       />
       <Sound
-        url="/scene/sound/intro.mp3"
+        url="https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/sound/intro.mp3"
         autoLoad={true}
         playStatus={introPlaying ? Sound.status.PLAYING : Sound.status.STOPPED}
         volume={70}
