@@ -77,9 +77,9 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
 
     Promise.all([
       // loadAsync('/scene/Office_.glb'),
-      // loadAsync(
-      //   'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/Office_.glb'
-      // ),
+      loadAsync(
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/Office_.glb'
+      ),
       // loadAsync('/scene/items/glass.glb'),
       loadAsync(
         'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/glass.glb'
