@@ -80,36 +80,36 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
       loadAsync(
         'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/Office_.glb'
       ),
-      // loadAsync('/scene/items/glass.glb'),
+      loadAsync('/scene/individuals/glass.glb'),
+      // loadAsync(
+      //   'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/individuals/glass.glb'
+      // ),
+      // loadAsync('/scene/individuals/closure_paper.glb'),
       loadAsync(
-        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/glass.glb'
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/individuals/closure_paper.glb'
       ),
-      // loadAsync('/scene/items/closure_paper.glb'),
+      // loadAsync('/scene/individuals/king.glb'),
       loadAsync(
-        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/closure_paper.glb'
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/individuals/king.glb'
       ),
-      // loadAsync('/scene/items/king.glb'),
+      // loadAsync('/scene/individuals/open_folder.glb'),
       loadAsync(
-        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/king.glb'
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/individuals/open_folder.glb'
       ),
-      // loadAsync('/scene/items/open_folder.glb'),
+      // loadAsync('/scene/individuals/paper_left.glb'),
       loadAsync(
-        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/open_folder.glb'
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/individuals/paper_left.glb'
       ),
-      // loadAsync('/scene/items/paper_left.glb'),
+      // loadAsync('/scene/individuals/portrait.glb'),
       loadAsync(
-        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/paper_left.glb'
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/individuals/portrait.glb'
       ),
-      // loadAsync('/scene/items/portrait.glb'),
+      // loadAsync('/scene/individuals/typewriter.glb'),
       loadAsync(
-        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/portrait.glb'
-      ),
-      // loadAsync('/scene/items/typewriter.glb'),
-      loadAsync(
-        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/typewriter.glb'
+        'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/individuals/typewriter.glb'
       ),
     ]).then((models) => {
-      // Set context for individual items
+      // Set context for individual individuals
       const individuals = models.filter((model, i) => i !== 0);
 
       dispatch({
@@ -216,7 +216,7 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
             backtoseatRef.current.style.pointerEvents = 'all';
             console.log(instructionRef.current);
             instructionRef.current.querySelector('#text').innerHTML =
-              'Click on the items to inspect them';
+              'Click on the individuals to inspect them';
 
             new TWEEN.Tween(camera.position)
               .to({ x: 62, y: 15, z: -20 }, 2000)
