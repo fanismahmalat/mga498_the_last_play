@@ -15,7 +15,7 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
   /**
    * Context
    */
-  const { state, dispatch } = React.useContext(Context);
+  const { dispatch } = React.useContext(Context);
 
   /**
    * Refs
@@ -56,13 +56,6 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
 
     // Interaction (clicks)
     new Interaction(renderer, scene, camera);
-
-    // Shows axis
-    const axesHelper = new THREE.AxesHelper(105);
-    scene.add(axesHelper);
-
-    // const gridHelper = new THREE.GridHelper(500, 20);
-    // scene.add(gridHelper);
 
     // GLTF Loader
     const loader = new GLTFLoader(manager);
@@ -170,12 +163,53 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
               .start();
           }
 
-          // if (el.name === 'typewriter') {
-          //   return new TWEEN.Tween(el.children[0].material.color)
-          //     .to({ r: 0.75, g: 0.55, b: 0.16 }, 300)
-          //     .easing(TWEEN.Easing.Quadratic.InOut)
-          //     .start();
-          // }
+          if (el.name === 'portrait') {
+            return el.children.forEach((child) => {
+              new TWEEN.Tween(child.material.color)
+                .to({ r: 1.4, g: 1.4, b: 0.9 }, 300)
+                .easing(TWEEN.Easing.Quadratic.InOut)
+                .start();
+            });
+          }
+
+          if (el.name === 'glass') {
+            return new TWEEN.Tween(el.children[3].material.color)
+              .to({ r: 1.7, g: 1.7, b: 1.1 }, 300)
+              .easing(TWEEN.Easing.Quadratic.InOut)
+              .start();
+          }
+
+          if (el.name === 'script' || el.name === 'casting_sheet' || el.name === 'king') {
+            return new TWEEN.Tween(el.material.color)
+              .to({ r: 0.65, g: 0.62, b: 0.24 }, 300)
+              .easing(TWEEN.Easing.Quadratic.InOut)
+              .start();
+          }
+
+          if (el.name === 'folder_with_certificate') {
+            return el.children[0].children.forEach((child) => {
+              new TWEEN.Tween(child.material.color)
+                .to({ r: 1.3, g: 1.3, b: 0.7 }, 300)
+                .easing(TWEEN.Easing.Quadratic.InOut)
+                .start();
+            });
+          }
+
+          if (el.name === 'typewriter') {
+            el.children[0].children.forEach((child) => {
+              new TWEEN.Tween(child.material.color)
+                .to({ r: 0.6, g: 0.6, b: 0.26 }, 300)
+                .easing(TWEEN.Easing.Quadratic.InOut)
+                .start();
+            });
+
+            new TWEEN.Tween(el.children[1].material.color)
+              .to({ r: 1.3, g: 1.3, b: 0.7 }, 300)
+              .easing(TWEEN.Easing.Quadratic.InOut)
+              .start();
+
+            return;
+          }
 
           if (el.name === 'closure_paper') {
             return new TWEEN.Tween(el.children[0].material.color)
@@ -193,12 +227,53 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
               .start();
           }
 
-          // if (el.name === 'typewriter') {
-          //   return new TWEEN.Tween(el.children[0].material.color)
-          //     .to({ r: 0.002899999963119626, g: 0.029999999329447746, b: 0 }, 300)
-          //     .easing(TWEEN.Easing.Quadratic.InOut)
-          //     .start();
-          // }
+          if (el.name === 'portrait') {
+            return el.children.forEach((child) => {
+              new TWEEN.Tween(child.material.color)
+                .to({ r: 1, g: 1, b: 1 }, 300)
+                .easing(TWEEN.Easing.Quadratic.InOut)
+                .start();
+            });
+          }
+
+          if (el.name === 'glass') {
+            return new TWEEN.Tween(el.children[3].material.color)
+              .to({ r: 1, g: 1, b: 1 }, 300)
+              .easing(TWEEN.Easing.Quadratic.InOut)
+              .start();
+          }
+
+          if (el.name === 'script' || el.name === 'casting_sheet' || el.name === 'king') {
+            return new TWEEN.Tween(el.material.color)
+              .to({ r: 1, g: 1, b: 1 }, 300)
+              .easing(TWEEN.Easing.Quadratic.InOut)
+              .start();
+          }
+
+          if (el.name === 'folder_with_certificate') {
+            return el.children[0].children.forEach((child) => {
+              new TWEEN.Tween(child.material.color)
+                .to({ r: 1, g: 1, b: 1 }, 300)
+                .easing(TWEEN.Easing.Quadratic.InOut)
+                .start();
+            });
+          }
+
+          if (el.name === 'typewriter') {
+            el.children[0].children.forEach((child) => {
+              new TWEEN.Tween(child.material.color)
+                .to({ b: 0.035, g: 0.09, r: 0.04 }, 300)
+                .easing(TWEEN.Easing.Quadratic.InOut)
+                .start();
+            });
+
+            new TWEEN.Tween(el.children[1].material.color)
+              .to({ r: 1, g: 1, b: 1 }, 300)
+              .easing(TWEEN.Easing.Quadratic.InOut)
+              .start();
+
+            return;
+          }
 
           if (el.name === 'closure_paper') {
             return new TWEEN.Tween(el.children[0].material.color)
@@ -214,9 +289,9 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
           if (el.name === 'Desk') {
             backtoseatRef.current.style.opacity = 1;
             backtoseatRef.current.style.pointerEvents = 'all';
-            console.log(instructionRef.current);
+
             instructionRef.current.querySelector('#text').innerHTML =
-              'Click on the individuals to inspect them';
+              'Click on the items to inspect them';
 
             new TWEEN.Tween(camera.position)
               .to({ x: 62, y: 15, z: -20 }, 2000)
@@ -334,7 +409,7 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
     return () => {
       window.removeEventListener('resize', handleWindowResize);
     };
-  }, [dispatch]);
+  }, [dispatch, backtoseatRef, instructionRef]);
 
   return (
     <Suspense fallback={'loading'}>

@@ -62,7 +62,6 @@ const Loading = () => {
         playStatus={ambientPlaying ? Sound.status.PLAYING : Sound.status.STOPPED}
         loop={true}
         volume={ambientSoundVolume}
-        onError={(code, desc) => console.log(code, desc)}
       />
       <Sound
         url="https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/sound/intro.mp3"

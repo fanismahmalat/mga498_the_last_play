@@ -149,7 +149,7 @@ const ItemInspector = () => {
         window.removeEventListener('resize', handleWindowResize);
       };
     }
-  }, [selectedItem]);
+  }, [selectedItem, models]);
 
   /**
    * Handlers
