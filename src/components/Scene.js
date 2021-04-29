@@ -336,6 +336,60 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
             payload: true,
           });
         });
+
+        el.on('touchend', () => {
+          let selected = '';
+
+          if (el.name === 'Desk') {
+            backtoseatRef.current.style.opacity = 1;
+            backtoseatRef.current.style.pointerEvents = 'all';
+
+            instructionRef.current.querySelector('#text').innerHTML =
+              'Click on the items to inspect them';
+
+            new TWEEN.Tween(camera.position)
+              .to({ x: 62, y: 15, z: -20 }, 2000)
+              .easing(TWEEN.Easing.Quadratic.InOut)
+              .start();
+
+            new TWEEN.Tween(controls.target)
+              .to({ x: 62, y: -20, z: -35 }, 2000)
+              .easing(TWEEN.Easing.Quadratic.InOut)
+              .start();
+
+            return;
+          }
+
+          if (el.name === 'casting_sheet' || el.name === 'script') {
+            selected = 'paper_left';
+          }
+
+          if (el.name === 'folder_with_certificate') {
+            selected = 'open_folder';
+          }
+
+          if (
+            el.name === 'portrait' ||
+            el.name === 'glass' ||
+            el.name === 'typewriter' ||
+            el.name === 'closure_paper' ||
+            el.name === 'king'
+          ) {
+            selected = el.name;
+          }
+
+          dispatch({
+            type: 'field',
+            field: 'selectedItem',
+            payload: selected,
+          });
+
+          dispatch({
+            type: 'field',
+            field: 'itemInspectorOpen',
+            payload: true,
+          });
+        });
       });
     });
 

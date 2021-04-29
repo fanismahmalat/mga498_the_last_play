@@ -99,7 +99,6 @@ const About = () => {
             <p className="role-name">Level Designers</p>
             <p className="person-name">Marilena Papakyriakou</p>
             <p className="person-name">Arsinoe Constantinou</p>
-            <p className="person-name">Arsinoe Constantinou</p>
             <p className="person-name">Chrystalia Pascalidou</p>
             <p className="person-name">Stalo Varnava</p>
           </div>
