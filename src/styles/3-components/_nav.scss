@@ -93,6 +93,7 @@
 
     a {
       margin-right: 15px;
+      font-size: 1rem;
 
       &:hover {
         color: rgb(223, 187, 187);
@@ -124,6 +125,32 @@
 
     .volume {
       width: 60px;
+    }
+  }
+}
+
+@media (max-width: $tablet-sm) {
+  .navigation {
+    .links {
+      top: 30px;
+      bottom: auto;
+      flex-direction: column;
+      align-items: flex-end;
+
+      a {
+        margin-right: 0;
+        margin-bottom: 15px;
+        padding: 0;
+      }
+
+      button {
+        margin-right: 0;
+        padding: 0;
+
+        .volume {
+          width: 45px;
+        }
+      }
     }
   }
 }

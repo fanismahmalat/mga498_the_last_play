@@ -26,14 +26,14 @@ const Loading = () => {
    * State
    */
   const [introPlaying, setIntroPlaying] = React.useState(false);
-  const [ambientPlaying, setAmbientPlaying] = React.useState(false);
   const [showLoadingScreen, setShowLoadingScreen] = React.useState(true);
 
   /**
    * Context
    */
   const {
-    state: { sceneProgress, ambientSoundVolume },
+    state: { sceneProgress, soundEnabled },
+    dispatch,
   } = React.useContext(Context);
 
   /**
@@ -59,9 +59,9 @@ const Loading = () => {
       <Sound
         url="https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/sound/icanhearthebells.mp3"
         autoLoad={true}
-        playStatus={ambientPlaying ? Sound.status.PLAYING : Sound.status.STOPPED}
+        playStatus={soundEnabled ? Sound.status.PLAYING : Sound.status.STOPPED}
         loop={true}
-        volume={ambientSoundVolume}
+        volume={10}
       />
       <Sound
         url="https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/sound/intro.mp3"
@@ -114,7 +114,11 @@ const Loading = () => {
                   .start();
 
                 setIntroPlaying(true);
-                setAmbientPlaying(true);
+                dispatch({
+                  type: 'field',
+                  field: 'soundEnabled',
+                  payload: true,
+                });
                 introTextRef.current.classList.add('intro-anim-start');
               }}
             >
@@ -125,7 +129,11 @@ const Loading = () => {
               onClick={() => {
                 setShowLoadingScreen(false);
                 setIntroPlaying(false);
-                setAmbientPlaying(true);
+                dispatch({
+                  type: 'field',
+                  field: 'soundEnabled',
+                  payload: true,
+                });
               }}
             >
               Skip intro

@@ -57,22 +57,6 @@ const Nav = ({ instructionRef, backtoseatRef }) => {
       field: 'soundEnabled',
       payload: !state.soundEnabled,
     });
-    const fadeInterval = setInterval(() => {
-      let playing = !state.soundEnabled;
-      let value = playing ? 0.05 : -0.05;
-      if (
-        (!playing && state.ambientSoundVolume <= 0) ||
-        (playing && state.ambientSoundVolume >= 12)
-      ) {
-        clearInterval(fadeInterval);
-        return;
-      }
-      dispatch({
-        type: 'field',
-        field: 'ambientSoundVolume',
-        payload: (state.ambientSoundVolume += value),
-      });
-    }, 3);
   };
 
   return (

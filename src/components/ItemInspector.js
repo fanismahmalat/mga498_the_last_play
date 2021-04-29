@@ -4,6 +4,9 @@ import Sound from 'react-sound';
 
 // Assets
 import { ReactComponent as CloseIcon } from '../assets/svg/close.svg';
+import { ReactComponent as InfoIcon } from '../assets/svg/info.svg';
+import { ReactComponent as HelpIcon } from '../assets/svg/help.svg';
+import HelpDetails from '../assets/help-details.png';
 
 // Three
 import * as THREE from 'three';
@@ -17,6 +20,9 @@ const ItemInspector = () => {
   /**
    * State
    */
+  const [infoText, setInfoText] = React.useState('');
+  const [showInfo, setShowInfo] = React.useState(false);
+  const [showHelp, setShowHelp] = React.useState(false);
   const [sound, setSound] = React.useState('');
   const [voiceOverPlayed, setVoiceOverPlayed] = React.useState(true);
 
@@ -50,6 +56,29 @@ const ItemInspector = () => {
         setVoiceOverPlayed(false);
       }
 
+      switch (selectedItem) {
+        case 'glass':
+          setInfoText(
+            '"Ah, my closest and oldest friend. Keeping me company in my long nights writing scripts. What would I do without you?"'
+          );
+          break;
+        case 'king':
+          setInfoText(
+            '"The most important piece at play. The game is finished only when he wins or dies and is never removed from the board. I relate."'
+          );
+          break;
+        case 'typewriter':
+          setInfoText('"The ol’ reliable! It has never failed me...unlike some people."');
+          break;
+        case 'portrait':
+          setInfoText(
+            '"Magnificently done, isn’t it? The artist captured my good side. Then again...every side is my good side."'
+          );
+          break;
+        default:
+          break;
+      }
+
       // Create a scene
       const scene = new THREE.Scene();
       // scene.background = new THREE.Color('#F7F9FB');
@@ -78,10 +107,6 @@ const ItemInspector = () => {
 
       // Set camera position
       camera.position.set(0, 0, 100);
-
-      // Shows axis
-      const axesHelper = new THREE.AxesHelper(105);
-      scene.add(axesHelper);
 
       // Add model to scene
       const model = models[selectedItem];
@@ -178,6 +203,14 @@ const ItemInspector = () => {
     });
   };
 
+  const handleInfo = () => {
+    setShowInfo((prevState) => !prevState);
+  };
+
+  const handleHelp = () => {
+    setShowHelp((prevState) => !prevState);
+  };
+
   const sceneVariants = {
     enter: {
       opacity: 1,
@@ -250,6 +283,39 @@ const ItemInspector = () => {
         <button className="animation-toggle-btn" onClick={handleToggleAnimation}>
           {itemAnimationEnabled ? 'Stop animation' : 'Resume animation'}
         </button>
+        <button
+          className="info-btn"
+          style={{
+            visibility: infoText !== '' ? 'visible' : 'hidden',
+            pointerEvents: infoText !== '' ? 'all' : 'none',
+          }}
+          onClick={handleInfo}
+        >
+          <InfoIcon />
+        </button>
+        <button className="help-btn" onClick={handleHelp}>
+          <HelpIcon />
+        </button>
+
+        <div
+          className="info-wrapper"
+          style={{
+            opacity: infoText !== '' && showInfo ? '1' : '0',
+            visibility: infoText !== '' && showInfo ? 'visible' : 'hidden',
+          }}
+        >
+          {infoText}
+        </div>
+
+        <div
+          className="help-wrapper"
+          style={{
+            opacity: showHelp ? '1' : '0',
+            visibility: showHelp ? 'visible' : 'hidden',
+          }}
+        >
+          <img src={HelpDetails} alt="Navigation help" />
+        </div>
 
         <div
           ref={containerRef}
