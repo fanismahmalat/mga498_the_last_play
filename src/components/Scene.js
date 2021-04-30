@@ -69,35 +69,27 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
     };
 
     Promise.all([
-      // loadAsync('/scene/Office_.glb'),
       loadAsync(
         'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/Office_.glb'
       ),
-      // loadAsync('/scene/items/glass.glb'),
       loadAsync(
         'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/glass.glb'
       ),
-      // loadAsync('/scene/items/closure_paper.glb'),
       loadAsync(
         'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/closure_paper.glb'
       ),
-      // loadAsync('/scene/items/king.glb'),
       loadAsync(
         'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/king.glb'
       ),
-      // loadAsync('/scene/items/open_folder.glb'),
       loadAsync(
         'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/open_folder.glb'
       ),
-      // loadAsync('/scene/items/paper_left.glb'),
       loadAsync(
         'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/paper_left.glb'
       ),
-      // loadAsync('/scene/items/portrait.glb'),
       loadAsync(
         'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/portrait.glb'
       ),
-      // loadAsync('/scene/items/typewriter.glb'),
       loadAsync(
         'https://cdn.jsdelivr.net/gh/fanismahmalat/mga498_the_last_play/public/scene/items/typewriter.glb'
       ),
@@ -406,9 +398,7 @@ const Scene = ({ instructionRef, backtoseatRef }) => {
     // Controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.target = new THREE.Vector3(0, -20, 0);
-    // controls.enabled = false; // disable cursor orbit
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.02;
+    controls.enabled = false; // disable cursor orbit
 
     // Back button
     backtoseatRef.current.addEventListener('click', () => {
