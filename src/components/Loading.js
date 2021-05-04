@@ -90,6 +90,7 @@ const Loading = () => {
           "The last play® is my magnum opus, my mark on history if you will. The last play though is
           the swan song of my theater. Let us witness what occured before it, that led me to shut
           down my theater."
+          <br />
           <br />- Raymond Douglas
         </p>
         <div
