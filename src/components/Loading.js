@@ -84,7 +84,6 @@ const Loading = () => {
       </div>
 
       <img className="logo" src={logo} alt="The last play logo" />
-      <h1 className="title">The Last Play</h1>
 
       <div className="loading-inner">
         <p ref={introTextRef} className="intro-text">
