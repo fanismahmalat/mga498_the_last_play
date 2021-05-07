@@ -91,7 +91,8 @@ const Loading = () => {
           the swan song of my theater. Let us witness what occured before it, that led me to shut
           down my theater."
           <br />
-          <br />- Raymond Douglas
+          <br />
+          <span style={{ display: 'block', textAlign: 'right' }}>- Raymond Douglas</span>
         </p>
         <div
           className="progress-bar"
